@@ -9,6 +9,12 @@ export default {
             password: Joi.string().min(6).required()
         }),
 
+    storeProduct:
+        Joi.object({
+            title: Joi.string().required(),
+            text: Joi.string().required()
+        }),
+        
     updateUser: Joi.object({
         first_name: Joi.string().required(),
         last_name: Joi.string().required(),

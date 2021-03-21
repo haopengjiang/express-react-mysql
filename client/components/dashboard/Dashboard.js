@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { fetchAll, destroyItem } from '../../actions/crudAction';
+
 import { cyan, pink, purple, orange } from '@material-ui/core/colors';
 import { Grid } from '@material-ui/core';
 import { AddShoppingCart, ThumbUp, Assessment, Face } from '@material-ui/icons';
@@ -6,14 +9,11 @@ import { AddShoppingCart, ThumbUp, Assessment, Face } from '@material-ui/icons';
 import SummaryBox from './SummaryBox';
 import Product from './Product';
 
-const products = [
-  { id: 1, title: 'Samsung TV', text: 'Samsung 32 1080p 60Hz LED Smart HDTV.' },
-  { id: 2, title: 'Playstation 4', text: 'PlayStation 3 500 GB System' },
-  { id: 3, title: 'Apple iPhone 6', text: 'Apple iPhone 6 Plus 16GB Factory Unlocked GSM 4G ' },
-  { id: 4, title: 'Apple MacBook', text: 'Apple MacBook Pro MD101LL/A 13.3-Inch Laptop' },
-];
+const Dashboard = ({ fetchAll, destroyItem, products }) => {
+  useEffect(() => {
+    fetchAll('products');
+  }, [fetchAll]);
 
-const Dashboard = () => {
   return (
     <div>
       <h2 style={{ paddingBottom: '15px' }}>Dashboard</h2>
@@ -36,13 +36,17 @@ const Dashboard = () => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={24} style={{ marginBottom: '15px' }}>
+      <Grid container spacing={10} style={{ marginBottom: '15px' }}>
         <Grid item xs>
-          <Product data={products} />
+          <Product data={products} deleteProduct={destroyItem} />
         </Grid>
       </Grid>
     </div>
   );
 };
 
-export default Dashboard;
+const mapStateToProps = (state) => ({
+  products: state.products.products,
+});
+
+export default connect(mapStateToProps, { fetchAll, destroyItem })(Dashboard);
